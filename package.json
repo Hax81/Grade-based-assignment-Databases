@@ -1,0 +1,24 @@
+{
+  "name": "grade-based-assignment-databases",
+  "version": "1.0.0",
+  "description": "Grade-based assignment for the Database-course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hax81/Grade-based-assignment-Databases.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hax81/Grade-based-assignment-Databases/issues"
+  },
+  "homepage": "https://github.com/Hax81/Grade-based-assignment-Databases#readme",
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "express": "^4.21.2"
+  }
+}
