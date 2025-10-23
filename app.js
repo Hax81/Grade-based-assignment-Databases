@@ -52,8 +52,6 @@ app.get('/products/:id', (req,res) => { //Kolontecknet säkerställer dynamik
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Uppgift 3: GET /products/search?name={searchterm}
 
-
-//app.get(`/products/search`, (req,res) => { //OBS! DETTA FUNGERAR INTE! VARFÖR? ROUTE CONFLICT? Måste ha endast app.get(`/search)!
 app.get(`/search`, (req,res) => { 
 const searchterm = req.query.name; 
 
@@ -178,10 +176,7 @@ app.delete('/products/:id', (req,res) => {
     console.error('Error!', err);
     res.status(500).json({Oops: 'There was a server error when trying to delete the product'}); //500 server error
   }
-
 });
-
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Kundhantering
@@ -208,7 +203,6 @@ app.get('/customers/:id', (req,res) => {
     console.error('Error!', err);
     res.status(500).json({Error: 'There was a server error trying to get the customer information', err}); //Provar en mer professionell ton i felmeddelandet (Key är "Error" istället för "Oops" el liknande)
   }
-
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,7 +238,6 @@ app.put('/customers/:id', (req,res) => {
     console.error('Error!', err);
     res.status(500).json({Error: 'There was a server error when trying to update the customer info', err});
   }
-
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -269,7 +262,6 @@ app.get('/customers/:id/orders', (req,res) => {
     console.error('Error!', err);
     res.status(500).json({Error: 'There was a server error when trying to get the orders', err}); //Serverfel
   }
-
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -293,7 +285,6 @@ app.get('/stats', (req,res) => { //app.get('products/stats') fungerar inte. Prob
     console.error('Error!', err);
     res.status(500).json({Error: 'There was a server error when trying to get the category statistics'});
   }
-
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -316,8 +307,4 @@ app.get('/reviews/stats', (req,res) => {
     console.error('Error!', err); //Hanterar serverfel när requesten görs
     res.status(500).json({Error: 'There was a server error when trying to get the review statistics'});
   }
-
 });
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////

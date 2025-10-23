@@ -1,7 +1,7 @@
 //I denna fil lägger jag det som har med databasen att göra
 
 const Database = require ('better-sqlite3'); //Använd better-sqlite3
-const db = new Database('TechGearWebShop.db', {verbose:console.log}); //Deklarera konstanten db som databasen ifråga. Mode för loggning i konsollen ska vara "verbose" ("pratig"), dvs mer detaljerad än standard.
+const db = new Database('TechGearWebShop.db', {verbose:console.log}); //Deklarera konstanten db som databasen ifråga. Mode för loggning i konsollen ska vara "verbose", dvs mer detaljerad än standard.
 module.exports = {getAllProducts, getProductById, getProductsBySearchTerm, getProductsByCategoryId, createNewProduct, updateProductById, deleteProductById, getCustomerInfoById, updateCustomerInfoById, listAllOrdersOfSpecificCustomer, statsPerCategory, averagePoints}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -12,7 +12,7 @@ module.exports = {getAllProducts, getProductById, getProductsBySearchTerm, getPr
 
 
 function getAllProducts(chooseSortingOfPrice = 'ASC') { //Funktion för att hämta alla produkter ur databasen. Tar en parameter att sortering på pris är ASC (ASC är default).
-  let products = []; //Array för datan (produkterna här) som hämtas från db
+  let products=[]; //Array för datan (produkterna här) som hämtas från db
 
 try {                                                       
   const stmt = db.prepare (`
@@ -39,7 +39,6 @@ try {
   });
   
   return products; //returnera products till anroparen i app
-
   };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +62,7 @@ let product=[];
       JOIN categories ON products_categories.category_id=categories.category_id
       WHERE products.product_id = ?;
       `); 
-      //SJUK JOIN att skriva!!! AAAAH!!
+      
     product = stmt.get(id);
     
     } catch (err) {
@@ -71,7 +70,6 @@ let product=[];
     }
 
     return product;
-
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,7 +77,7 @@ let product=[];
 // ○ Sök och lista produkter vars namn innehåller söktermen
 
 function getProductsBySearchTerm (searchterm) {
-  let products=[]; //deklarerar en variabel av typen let som en tom array. Denna ska fyllas med jsonobjekt som resulterar av sökningen. 
+  let products=[]; 
   try { 
     const stmt = db.prepare ('SELECT * FROM products WHERE name LIKE ?'); //LIKE för wildcard
     products = stmt.all(`%${searchterm}%`); //stmt.all() används pga att man söker efter många produkter. Wildcard för matchningarna.
@@ -89,7 +87,6 @@ function getProductsBySearchTerm (searchterm) {
     } catch (err) {
      console.error ("An error occured because the search does not match any products:", err);
     }
-
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,7 +94,7 @@ function getProductsBySearchTerm (searchterm) {
 // ○ Lista alla produkter i en specifik kategori
 
 function getProductsByCategoryId (categoryId) {
-  let result = []; 
+  let result=[]; 
   try {
     const stmt = db.prepare(`
     SELECT products.product_id, products.name, products.description, categories.name AS category_name
@@ -133,7 +130,6 @@ try {
     console.error('An error occured when trying to add the new product',err);
     return null; //Return null blir här samma sak som att i ifsatsen i app.js ha: if(!resultOfCreatingProduct). OBS utropstecknet.
   }
-
 };
 
 
@@ -157,9 +153,6 @@ try {
     console.error('An error occured when trying to update the product',err); //Loggar felmeddelande i konsollen.
     return null; //Felhantering. Returnerar null till anroparen för att visa att det gick fel. Kan kombineras med en if-sats hos anroparen (if result === null //Kod som ska köras) else //kod som ska köras).
   }
-
-  
-
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -178,7 +171,6 @@ function deleteProductById (product_id) {
     console.error('Error!', err);
     return null; //Returnera null till anroparen för att visa att det gick fel. Se ovan.
   }
-
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -188,7 +180,7 @@ function deleteProductById (product_id) {
 // ○ Inkludera orderhistorik via JOIN med orders-tabellen
 
 function getCustomerInfoById (customerid) {
-  let customer = []; //En array med kundobjekten
+  let customer=[]; //En array med kundobjekten
 
   try {
     const stmt = db.prepare (`
@@ -203,16 +195,15 @@ function getCustomerInfoById (customerid) {
             JOIN orders ON customers.customer_id = orders.customer_id 
             WHERE customers.customer_id = ?
       `); //I JOINEN tar jag ej med customer.password pga detta kan vara olämpligt/ej relevant att visa. 
-          //JOIN (INNER JOIN) pga vill endast ha de kunder som HAR orders. ÄR detta korrekt tänkt? 
+          //JOIN (INNER JOIN) pga vill endast ha de kunder som HAR orders. 
       customer = stmt.all(customerid);
 
   } catch (err) {
     console.error('Error!', err); //Felhantering för utvecklaren
-    return null; //Felhantering för att visa användaren
+    return null; 
   }
 
   return customer;
-
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -229,7 +220,6 @@ function updateCustomerInfoById ({email, phone, address, customerId}) {
     console.error('An error occured when trying to update the customerinfo', err);
     return null;
   }
-
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -261,7 +251,6 @@ function listAllOrdersOfSpecificCustomer (customerid) {
     console.error('An error occured when trying to list the orders', err);
     return null;
   }
-
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,7 +263,7 @@ Uppgift 1: GET /products/stats
 
  function statsPerCategory () {
 
-  let stats = [];
+  let stats=[];
 
   try {
     const stmt = db.prepare(`
@@ -300,7 +289,6 @@ Uppgift 1: GET /products/stats
     console.error('Error when trying to display the statistics', err);
     return null; //else i app.js kommer att skicka en 404
   }
-
  };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -311,7 +299,7 @@ Uppgift 1: GET /products/stats
 
 function averagePoints () {
 
-let average = [];
+let average=[];
 
   try {
     const stmt = db.prepare(`
@@ -331,8 +319,4 @@ let average = [];
     console.error('There was an error when trying to calculate the average points', err);
     return null; //Om null returneras betyder det att datan (dvs genomsnittsbetyget) ej kunde hämtas av funktionen --> error 404.
   }
-
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
